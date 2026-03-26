@@ -1,6 +1,5 @@
 package com.demo.spring.Exceptions;
 
-import com.demo.spring.Exceptions.TicketResourceException;
 import com.demo.spring.util.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
