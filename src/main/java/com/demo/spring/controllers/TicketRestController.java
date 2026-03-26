@@ -47,7 +47,11 @@ public class TicketRestController {
         return ResponseEntity.ok(new ResponseMessage("ticket deleted"));
     }
 
+<<<<<<< HEAD
 //    Authentication purposewe created these two functions
+=======
+//    Authentication purpose we created these two functions
+>>>>>>> 94f12d2ab325b93c99810364efb771a4569980c8
 //    @GetMapping(path = "/User",produces = MediaType.APPLICATION_JSON_VALUE)
 //    public ResponseEntity<List<Ticket>> getLoginUser(){
 //        return ResponseEntity.ok(ticketService.getUser());
