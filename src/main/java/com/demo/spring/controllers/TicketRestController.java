@@ -2,6 +2,7 @@ package com.demo.spring.controllers;
 
 import com.demo.spring.entity.Ticket;
 import com.demo.spring.services.TicketService;
+import com.demo.spring.util.ResponseMessage;
 import org.springframework.http.MediaType;
 
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class TicketRestController {
     @DeleteMapping(path = "/delete/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ticket> deleteTicket(@PathVariable Integer id){
         ticketService.deleteTicket(id);
-        return ResponseEntity.ok(new ResponseMessage("ticket deleted"))
+        return ResponseEntity.ok(new ResponseMessage("ticket deleted"));
     }
 
 
