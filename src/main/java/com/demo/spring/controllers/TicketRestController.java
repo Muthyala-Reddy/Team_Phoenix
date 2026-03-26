@@ -1,6 +1,7 @@
 package com.demo.spring.controllers;
 
 import com.demo.spring.entity.Ticket;
+import com.demo.spring.services.TicketService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
