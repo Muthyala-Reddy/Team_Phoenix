@@ -25,6 +25,11 @@ public class TicketRestController {
         return ResponseEntity.ok(ticketService.getAllTickets());
     }
 
+    @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Ticket> getOneTicket(@PathVariable Integer id){
+        return ResponseEntity.ok(ticketService.getOneTicket(id));
+    }
+
     @PostMapping(path = "/create",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ticket> createTicket(@RequestBody Ticket t){
         return ResponseEntity.ok(ticketService.saveTicket(t));
@@ -43,15 +48,15 @@ public class TicketRestController {
     }
 
 //    Authentication purposewe created these two functions
-    @GetMapping(path = "/User",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Ticket>> getLoginUser(){
-        return ResponseEntity.ok(ticketService.getUser());
-    }
-
-    @GetMapping(path = "/Admin",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Ticket>> getLoginAdmin(){
-        return ResponseEntity.ok(ticketService.getAdmin());
-    }
+//    @GetMapping(path = "/User",produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<Ticket>> getLoginUser(){
+//        return ResponseEntity.ok(ticketService.getUser());
+//    }
+//
+//    @GetMapping(path = "/Admin",produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<Ticket>> getLoginAdmin(){
+//        return ResponseEntity.ok(ticketService.getAdmin());
+//    }
 
 
 
