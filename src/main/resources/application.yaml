@@ -1,3 +1,11 @@
 spring:
   application:
-    name: demo
+    name: Team_Phoenix-master
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3307}/${DATABASE:trainingsql}
+    username: ${DB-USER:root}
+    password: ${DB-PASSWORD:root}
+  jpa:
+    show_sql: true
+server:
+  port: 8082
