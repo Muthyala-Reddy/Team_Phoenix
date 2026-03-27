@@ -63,8 +63,10 @@ function Admin() {
           placeholder="Password"
         />
       </div>
-      <div>
+      <div className="d-flex justify-content-center gap-2">
         <button onClick={handleSubmit}>Submit</button>
+
+        <button onClick={() => navigate(-1)}> ← Back</button>
       </div>
 
     </div>
