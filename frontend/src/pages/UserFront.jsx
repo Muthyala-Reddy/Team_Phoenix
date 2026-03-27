@@ -1,13 +1,14 @@
 import React from "react";
+import "../styles/UserFront.css";
 
 function UserFront() {
   return (
-    <div className="container mt-4">
+    <div className="container mt-5">
       <form>
         {/* Title_of_Incident */}
         <div className="row mb-3">
           <label htmlFor="inputTitle_of_Incident3" className="col-sm-2 col-form-label">
-            Title_of_Incident
+            Title of Incident
           </label>
           <div className="col-sm-10">
             <input
@@ -22,7 +23,7 @@ function UserFront() {
         {/* Description */}
         <div className="row mb-3">
           <label htmlFor="inputDescription3" className="col-sm-2 col-form-label">
-            Description
+          Description
           </label>
           <div className="col-sm-10">
             <input

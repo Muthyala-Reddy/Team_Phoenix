@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styles/UserFront.css";
 
 function AllotedPage() {
   const [incidents, setIncidents] = useState([]);
@@ -18,7 +19,7 @@ function AllotedPage() {
     // ✅ navigate to update page with incident id
     navigate(`/UpdateTicket/${id}`);
   };
-  const handleDeleteeClick = (id) => {
+  const handleDeleteClick = (id) => {
     // ✅ navigate to delete page with incident id
     navigate(`/DeleteTicket/${id}`);
   };

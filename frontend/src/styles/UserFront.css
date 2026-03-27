@@ -1,0 +1,103 @@
+/* Center the whole form and give a nice background */
+.container.mt-4 {
+  max-width: 700px;              /* ✅ reduces overall form width */
+  margin: 40px auto !important;  /* ✅ centers container */
+  background: #ffffff;
+  padding: 28px 30px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
+  border: 1px solid rgba(228, 227, 232, 0.12);
+}
+
+/* Optional: page background (applies to body) */
+body {
+  background: linear-gradient(135deg, #f3e8ff, #eef2ff); /* lavender-ish */
+}
+
+/* Make labels look cleaner */
+.container.mt-4 .col-form-label,
+.container.mt-4 .form-label {
+  font-weight: 600;
+  color: #2f2f2f;
+}
+
+/* Input style */
+.container.mt-4 .form-control {
+  border-radius: 12px;
+  border: 1px solid #d9d9e3;
+  padding: 10px 12px;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+/* Focus effect */
+.container.mt-4 .form-control:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 0.2rem rgba(124, 58, 237, 0.18);
+}
+
+/* Improve row spacing */
+.container.mt-4 .row.mb-3 {
+  margin-bottom: 18px !important;
+}
+
+/* Fieldset legend spacing and style */
+.container.mt-4 fieldset legend {
+  font-weight: 700;
+  color: #333;
+}
+
+/* Radio section box look (works with your fieldset structure) */
+.container.mt-4 fieldset .col-sm-2 {
+  background: #faf7ff;
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  padding: 12px 14px;
+  border-radius: 14px;
+}
+
+/* Radio alignment + spacing */
+.container.mt-4 .form-check {
+  margin-bottom: 8px;
+}
+
+/* Purple radio when selected */
+.container.mt-4 .form-check-input:checked {
+  background-color: #7c3aed;
+  border-color: #7c3aed;
+}
+
+/* Submit button - nicer look */
+.container.mt-4 .btn.btn-primary {
+  width: 160px;              /* ✅ button not too wide */
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+  background: #16a34a;       /* ✅ green button */
+  border: none;
+  transition: 0.2s ease;
+}
+
+/* Hover effect */
+.container.mt-4 .btn.btn-primary:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+/* Center the submit button area */
+.container.mt-4 > form > button.btn.btn-primary {
+  display: block;
+  margin: 18px auto 0;       /* ✅ center button */
+}
+
+/* Make form look good on mobile */
+@media (max-width: 576px) {
+  .container.mt-4 {
+    padding: 18px;
+    margin: 20px auto !important;
+  }
+
+  .container.mt-4 .btn.btn-primary {
+    width: 100%;
+  }
+}
+``

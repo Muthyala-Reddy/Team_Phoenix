@@ -1,3 +1,39 @@
 body {
-  background-color: lightblue;
+  background-color: rgb(214, 175, 22);
+}
+
+.firstcard{
+  border-radius: 8px;
+  padding-left: 200px;
+  padding-right: 200px;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  margin-top: 100px;
+  margin-left: 10px;
+  margin-right: 20px;
+
+}
+/* full page center */
+.user-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center;     /* center vertically */
+  background-color: #f3f0ff; /* light lavender */
+  padding: 20px;
+}
+
+/* card box width control */
+.user-card {
+  width: 100%;
+  max-width: 360px; /* 👈 reduce form width here */
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+/* optional: make input height smaller even more */
+.user-card .form-control-sm {
+  height: 34px;
+  font-size: 14px;
 }
