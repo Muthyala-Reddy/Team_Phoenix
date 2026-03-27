@@ -34,7 +34,24 @@ function UpdateIncident() {
   };
 
   return (
-    <div className="container mt-4">
+    <div>
+          <nav className="navbar navbar-expand-lg bg-body-tertiary">
+  <div className="container-fluid">
+    <a className="navbar-brand" href="#">Phoenix</a>
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
+    </button>
+    <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div className="navbar-nav">
+        <a className="nav-link active" aria-current="page" href="#">CREATE</a>
+        <a className="nav-link" href="#">READ</a>
+        <a className="nav-link" href="#">DELETE</a>
+        <a className="nav-link disabled" aria-disabled="true">Disabled</a>
+      </div>
+    </div>
+  </div>
+</nav>
+      <div className="container mt-4">
       <h2 className="text-center mb-4">Update Incident</h2>
     
       <form onSubmit={handleSubmit} className="w-50 mx-auto">
@@ -67,6 +84,10 @@ function UpdateIncident() {
         </button>
       </form>
     </div>
+
+
+    </div>
+    
   );
 }
 
