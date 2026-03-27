@@ -1,94 +1,88 @@
+<<<<<<< HEAD
 import React from "react";
 import "../styles/UserFront.css";
+=======
+import React, { useEffect } from "react";
+import axios from "axios";
+// If bootstrap isn't imported globally in main.jsx, uncomment next line:
+// import "bootstrap/dist/css/bootstrap.min.css";
+>>>>>>> b00bb2c (message)
 
 function UserFront() {
+  useEffect(() => {
+    axios
+      .get("http://localhost:8082/ticket/User")
+      .then((res) => console.log(res.data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <div className="container mt-5">
       <form>
-        {/* Title_of_Incident */}
         <div className="row mb-3">
+<<<<<<< HEAD
           <label htmlFor="inputTitle_of_Incident3" className="col-sm-2 col-form-label">
             Title of Incident
+=======
+          <label htmlFor="inputTitle" className="col-sm-2 col-form-label">
+            Title_of_Incident
+>>>>>>> b00bb2c (message)
           </label>
           <div className="col-sm-10">
             <input
-              type="Title_of_Incident"
+              type="text"
               className="form-control"
-              id="inputTitle_of_Incident3"
+              id="inputTitle"
               placeholder="Enter Title_of_Incident"
             />
           </div>
         </div>
 
-        {/* Description */}
         <div className="row mb-3">
+<<<<<<< HEAD
           <label htmlFor="inputDescription3" className="col-sm-2 col-form-label">
           Description
+=======
+          <label htmlFor="inputDescription" className="col-sm-2 col-form-label">
+            Description
+>>>>>>> b00bb2c (message)
           </label>
           <div className="col-sm-10">
             <input
-              type="Description"
+              type="text"
               className="form-control"
-              id="inputDescription3"
+              id="inputDescription"
               placeholder="Enter Description"
             />
           </div>
         </div>
 
-        {/* type */}
         <fieldset className="row mb-3">
-          <legend className="col-form-label col-sm-1 pt-3">Type</legend>
-
-          <div className="col-sm-2">
+          <legend className="col-form-label col-sm-2 pt-0">Type</legend>
+          <div className="col-sm-10">
             <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="gridRadios"
-                id="gridRadios1"
-                value="option1"
-                defaultChecked
-              />
-              <label className="form-check-label" htmlFor="gridRadios1">
+              <input className="form-check-input" type="radio" name="type" id="bugs" defaultChecked />
+              <label className="form-check-label" htmlFor="bugs">
                 Bugs
               </label>
             </div>
 
             <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="gridRadios"
-                id="gridRadios2"
-                value="option2"
-              />
-              <label className="form-check-label" htmlFor="gridRadios2">
+              <input className="form-check-input" type="radio" name="type" id="software" />
+              <label className="form-check-label" htmlFor="software">
                 Software_installation
               </label>
             </div>
 
-            <div className="form-check disabled">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="gridRadios"
-                id="gridRadios3"
-                value="option3"
-                
-              />
-              <label className="form-check-label" htmlFor="gridRadios3">
+            <div className="form-check">
+              <input className="form-check-input" type="radio" name="type" id="equipment" />
+              <label className="form-check-label" htmlFor="equipment">
                 Equipment_Related
               </label>
-
             </div>
           </div>
         </fieldset>
 
-        {/* Checkbox */}
-        
-        
-
-        {/* Submit Button */}
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
