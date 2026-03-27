@@ -12,7 +12,7 @@ function LoginPage() {
         <h2 className="loginpage-title">Login</h2>
         <p className="loginpage-subtitle">Choose your role to continue</p>
 
-        <div className="loginpage-btn-row d-flex justify-content-center gap-2">
+        <div className="loginpage-btn-row">
           <button
             className="loginpage-btn user-btn"
             onClick={() => navigate("/user")}

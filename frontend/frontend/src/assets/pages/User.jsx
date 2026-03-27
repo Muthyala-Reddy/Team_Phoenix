@@ -3,7 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Admin() {
+
+function User() {
   
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -72,4 +73,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default User;

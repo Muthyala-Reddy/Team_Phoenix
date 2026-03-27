@@ -9,19 +9,16 @@ function Admin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-
-  
   const handleSubmit = async (e) => {
       e.preventDefault();
       setError("");
-  
+              
       try {
-        const res = await axios.post("http://localhost:8080/api/auth/login", {
+        const res = await axios.post("http://localhost:8082/api/auth/login", {
           username,
           password,
         });
-      
+        
         // if success -> go to next page
         if (res.status === 200) {
           navigate("/userfront");
@@ -35,8 +32,6 @@ function Admin() {
         }
       }
     };
-
-
 
   return (
     <div className="container mt-4">

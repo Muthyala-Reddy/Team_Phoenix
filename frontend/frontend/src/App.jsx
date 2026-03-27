@@ -15,6 +15,8 @@ import InProgressPage from './assets/pages/InProgressPage';
 
 
 function App() {
+  const [count, setCount] = useState(0)
+
   return (
     <>
       <BrowserRouter>

@@ -29,7 +29,7 @@ public class TicketService {
         if(ticketOp.isPresent()){
             return ticketOp.get();
         }else{
-            throw new TicketNotFoundException("Ticket with the Id "+ id + " Not Found ");
+            throw new TicketFoundException("Ticket with the Id "+ id + " Not Found ");
         }
     }
 
