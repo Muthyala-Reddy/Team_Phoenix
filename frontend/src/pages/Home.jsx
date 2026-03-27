@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 
-function LoginPage() {
+function Home() {
   const navigate = useNavigate();
   
 
@@ -32,4 +32,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default Home;

@@ -1,17 +1,17 @@
 import { useState } from 'react'
 import React from 'react'
 import './App.css'
-import Home from './assets/pages/Home'
+import Home from './pages/Home'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import User from './assets/pages/User';
-import Admin from './assets/pages/Admin';
-import AdminFront from './assets/pages/AdminFront';
-import UserFront from './assets/pages/UserFront';
-import SubmittedPage from './assets/pages/SubmittedPage';
-import AllotedPage from './assets/pages/AllotedPage';
-import UpdateTicket from './assets/pages/UpdateTicket';
-import DeleteTicket from './assets/pages/DeleteTicket';
-import InProgressPage from './assets/pages/InProgressPage';
+import User from './pages/User';
+import Admin from './pages/Admin';
+import AdminFront from './pages/AdminFront';
+import UserFront from './pages/UserFront';
+import SubmittedPage from './pages/SubmittedPage';
+import AllotedPage from './pages/AllotedPage';
+import UpdateTicket from './pages/UpdateTicket';
+import DeleteTicket from './pages/DeleteTicket';
+import InProgressPage from './pages/InProgressPage';
 
 
 function App() {
