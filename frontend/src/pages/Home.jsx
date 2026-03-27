@@ -2,8 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 
-function LoginPage() {
+function Home() {
   const navigate = useNavigate();
+  
 
   return (
     <div className="loginpage-container">
@@ -31,4 +32,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default Home;

@@ -28,6 +28,11 @@ public class Ticket {
 
     private LocalDateTime updated_at;
 
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+
     public Ticket() {
     }
 
@@ -95,5 +100,13 @@ public class Ticket {
 
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

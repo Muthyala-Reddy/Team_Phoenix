@@ -3,6 +3,8 @@ package com.demo.spring.repositories;
 import com.demo.spring.entity.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TicketRepository extends JpaRepository<Ticket,Integer>
-{
+import java.util.List;
+
+public interface TicketRepository extends JpaRepository<Ticket, Integer> {
+    List<Ticket> findByCreatedBy(String createdBy);
 }
