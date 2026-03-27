@@ -1,16 +1,12 @@
 package com.demo.spring.services;
 
-
-
-import com.demo.spring.Exceptions.TicketFoundException;
-import com.demo.spring.Exceptions.TicketNotFoundException;
-import com.demo.spring.Exceptions.TicketResourceException;
+import com.demo.spring.exceptions.TicketFoundException;
+import com.demo.spring.exceptions.TicketNotFoundException;
 import com.demo.spring.entity.Ticket;
 import com.demo.spring.repositories.TicketRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TicketService {
@@ -22,15 +18,6 @@ public class TicketService {
 
     public List<Ticket> getAllTickets(){
         return this.ticketRepository.findAll();
-    }
-
-    public Ticket getOneTicket(Integer id){
-        Optional<Ticket> ticketOp=ticketRepository.findById(id);
-        if(ticketOp.isPresent()){
-            return ticketOp.get();
-        }else{
-            throw new TicketFoundException("Ticket with the Id "+ id + " Not Found ");
-        }
     }
 
     public Ticket saveTicket(Ticket t){
