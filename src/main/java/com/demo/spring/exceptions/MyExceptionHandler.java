@@ -1,4 +1,4 @@
-package com.demo.spring.Exceptions;
+package com.demo.spring.exceptions;
 
 import com.demo.spring.util.ResponseMessage;
 import org.springframework.http.HttpStatus;

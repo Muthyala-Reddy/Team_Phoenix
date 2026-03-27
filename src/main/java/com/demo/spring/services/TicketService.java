@@ -1,16 +1,12 @@
 package com.demo.spring.services;
 
-
-
-import com.demo.spring.Exceptions.TicketFoundException;
-import com.demo.spring.Exceptions.TicketNotFoundException;
-import com.demo.spring.Exceptions.TicketResourceException;
+import com.demo.spring.exceptions.TicketFoundException;
+import com.demo.spring.exceptions.TicketNotFoundException;
 import com.demo.spring.entity.Ticket;
 import com.demo.spring.repositories.TicketRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TicketService {

@@ -1,4 +1,4 @@
-package com.demo.spring.Exceptions;
+package com.demo.spring.exceptions;
 
 public class TicketResourceException extends RuntimeException{
     public TicketResourceException() {
