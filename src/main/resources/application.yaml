@@ -2,7 +2,7 @@ spring:
   application:
     name: Team_Phoenix-master
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3307}/${DATABASE:trainingsql}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3307}/${DATABASE:training}
     username: ${DB-USER:root}
     password: ${DB-PASSWORD:root}
   jpa:
