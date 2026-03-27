@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ticket")
+@CrossOrigin(origins = "http://localhost:5173")
 public class TicketRestController {
 
     private TicketService ticketService;
@@ -46,7 +47,6 @@ public class TicketRestController {
     }
 
 //    Authentication purpose we created these two functions
-
 
 
 
