@@ -9,7 +9,8 @@ import AdminFront from './assets/pages/AdminFront';
 import UserFront from './assets/pages/UserFront';
 import SubmittedPage from './assets/pages/SubmittedPage';
 import AllotedPage from './assets/pages/AllotedPage';
-
+import UpdateTicket from './assets/pages/UpdateTicket';
+import DeleteTicket from './assets/pages/DeleteTicket';
 import InProgressPage from './assets/pages/InProgressPage';
 
 
@@ -29,6 +30,9 @@ function App() {
             <Route path="/Admin/AdminFront/SubmittedPage" element={<SubmittedPage/>} />
             <Route path="/Admin/AdminFront/AllotedPage" element={<AllotedPage />} />
             <Route path="/Admin/AdminFront/InProgressPage" element={<InProgressPage />} />
+
+            <Route path="/Admin/AdminFront/AllotedPage/UpdateTicket" element={<UpdateTicket />} />
+            <Route path="/Admin/AdminFront/AllotedPage/DeleteTicket" element={<DeleteTicket />} />
 
             
             
