@@ -11,8 +11,8 @@ function Home() {
     <div className="loginpage-container">
       <div className="loginpage-card">
         
-        <h2 className="loginpage-title">Welcome</h2>
-        <p className="loginpage-subtitle">Please choose your role to continue</p>
+        <h1 className="loginpage-title text-center mb-4 mt-5">WELCOME </h1>
+        <p className="loginpage-subtitle text-center mb-4 mt-5">Please choose your role to continue</p>
         <div class="d-flex flex-column justify-content-end">
         <div className="loginpage-btn-row">
           <button
