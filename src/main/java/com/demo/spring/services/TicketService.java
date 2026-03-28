@@ -1,58 +1,76 @@
 package com.demo.spring.services;
 
+import com.demo.spring.entity.Ticket;
 import com.demo.spring.exceptions.TicketFoundException;
 import com.demo.spring.exceptions.TicketNotFoundException;
-import com.demo.spring.entity.Ticket;
 import com.demo.spring.repositories.TicketRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TicketService {
-    private TicketRepository ticketRepository;
 
-    public TicketService(TicketRepository ticketRepository){
+    private final TicketRepository ticketRepository;
+
+    public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
     }
 
-    public List<Ticket> getAllTickets(){
-        return this.ticketRepository.findAll();
+    public List<Ticket> getAllTickets() {
+        return ticketRepository.findAll();
     }
 
-    public Ticket saveTicket(Ticket t){
-        if(ticketRepository.existsById(t.getId())) {
-            throw new TicketFoundException("Ticket already is there!!");
+
+    public Ticket saveTicket(String username,Ticket t) {
+        t.setCreatedBy(username);
+        if (t.getCreated_at() == null) {
+            t.setCreated_at(LocalDateTime.now());
+        }
+        t.setUpdated_at(LocalDateTime.now());
+        return ticketRepository.save(t);
+    }
+
+
+    public Ticket getOneTicket(Long id){
+        Optional<Ticket> ticketOp=ticketRepository.findById(id);
+        if(ticketOp.isPresent()){
+            return ticketOp.get();
         }else{
-            return ticketRepository.save(t);
+            throw new TicketNotFoundException("Ticket with the Id "+ id + " Not Found ");
         }
     }
 
-    public Ticket updateTicket(Integer id, Ticket t) {
+    public Ticket updateTicket(Long id, Ticket t) {
         Ticket target = ticketRepository.findById(id)
-                .orElseThrow(() -> new TicketNotFoundException("No Ticket found associated with id!!"));
-        if (t.getUpdated_at() != null) {
-            target.setUpdated_at(t.getUpdated_at());
-        }
+                .orElseThrow(() ->
+                        new TicketNotFoundException("No Ticket found with id")
+                );
         if (t.getStatus() != null) {
             target.setStatus(t.getStatus());
         }
         if (t.getPriority() != null) {
             target.setPriority(t.getPriority());
         }
-        if (t.getUpdated_at() == null && t.getStatus() == null && t.getPriority() == null) {
-            throw new IllegalArgumentException("No fields provided to update!");
+        if(t.getUpdated_at() == null && t.getStatus() == null && t.getPriority() == null){
+            throw new IllegalArgumentException("No fields to update");
         }
+
+        target.setUpdated_at(LocalDateTime.now());
+
         return ticketRepository.save(target);
     }
-    public void deleteTicket(Integer id){
-        if(ticketRepository.existsById(id)){
-            ticketRepository.deleteById(id);
-        }else{
+
+    public void deleteTicket(Long id) {
+        if (!ticketRepository.existsById(id)) {
             throw new TicketNotFoundException("No ticket to delete");
         }
+        ticketRepository.deleteById(id);
     }
 
-
-
+    public List<Ticket> getUserTickets(String username) {
+        return ticketRepository.findByCreatedBy(username);
+    }
 }

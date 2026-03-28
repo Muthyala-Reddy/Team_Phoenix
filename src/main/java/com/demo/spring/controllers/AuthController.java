@@ -1,4 +1,6 @@
 package com.demo.spring.controllers;
+
+import com.demo.spring.dto.LoginResponse;
 import com.demo.spring.entity.Users;
 import com.demo.spring.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +16,19 @@ public class AuthController {
     public AuthController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Users req) {
+    public ResponseEntity<?> login(@RequestBody Users req) {
+
         Users user = userRepository.findByUsername(req.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid username"));
+
         if (!user.getPassword().equals(req.getPassword())) {
-            return ResponseEntity.status(401)
-                    .body("Invalid password");
+            return ResponseEntity.status(401).body("Invalid password");
         }
-        return ResponseEntity.ok("Login success");
+
+        return ResponseEntity.ok(
+                new LoginResponse(user.getUsername(), user.getRole())
+        );
     }
 }

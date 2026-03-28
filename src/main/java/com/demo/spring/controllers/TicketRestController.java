@@ -4,7 +4,6 @@ import com.demo.spring.entity.Ticket;
 import com.demo.spring.services.TicketService;
 import com.demo.spring.util.ResponseMessage;
 import org.springframework.http.MediaType;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,40 +14,49 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class TicketRestController {
 
-    private TicketService ticketService;
+    private final TicketService ticketService;
 
     public TicketRestController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
 
-    @GetMapping(path = "/",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Ticket>> findAllTickets(){
+    @GetMapping(path = "/admin/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Ticket>> findAllTickets() {
         return ResponseEntity.ok(ticketService.getAllTickets());
     }
-
-    @PostMapping(path = "/create",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket t){
-        return ResponseEntity.ok(ticketService.saveTicket(t));
+    @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Ticket> getOneTicket(@PathVariable Long id){
+        return ResponseEntity.ok(ticketService.getOneTicket(id));
     }
 
-    @PutMapping(path = "/update/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ticket> updateTicket(@PathVariable Integer id, @RequestBody Ticket t){
-        Ticket newUpdatedTicket=ticketService.updateTicket(id, t);
-        return ResponseEntity.ok(newUpdatedTicket);
+    @PostMapping(path = "/create",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Ticket> createTicket( @RequestParam String username,@RequestBody Ticket t) {
+        t.setCreatedBy(username);
+        return ResponseEntity.ok(ticketService.saveTicket(username,t));
     }
 
-    @DeleteMapping(
-            path = "/delete/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE
+    @PutMapping(
+            path = "/update/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseMessage> deleteTicket(@PathVariable Integer id){
+    public ResponseEntity<Ticket> updateTicket(
+            @PathVariable Long id,
+            @RequestBody Ticket t
+    ) {
+        return ResponseEntity.ok(ticketService.updateTicket(id, t));
+    }
+
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity<ResponseMessage> deleteTicket(@PathVariable Long id) {
         ticketService.deleteTicket(id);
         return ResponseEntity.ok(new ResponseMessage("ticket deleted"));
     }
 
-//    Authentication purpose we created these two functions
-
-
-
-
+    @GetMapping(path = "/User", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Ticket>> getLoginUser(
+            @RequestParam String username
+    ) {
+        return ResponseEntity.ok(ticketService.getUserTickets(username));
+    }
 }

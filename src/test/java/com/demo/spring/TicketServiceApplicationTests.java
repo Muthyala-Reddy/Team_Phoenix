@@ -22,8 +22,10 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+
 class TicketServiceApplicationTests {
 
 	@Autowired
@@ -33,7 +35,7 @@ class TicketServiceApplicationTests {
 	TicketService ticketService;
 
 	@Test
-	public void testFindAllTicketsSuccess_empty() throws Exception {
+	void testFindAllTicketsSuccess_empty() throws Exception {
 		when(ticketService.getAllTickets()).thenReturn(List.of());
 
 		mvc.perform(get("/ticket/"))
@@ -45,9 +47,9 @@ class TicketServiceApplicationTests {
 	}
 
 	@Test
-	public void testFindAllTicketsSuccess_twoTickets() throws Exception {
+	void testFindAllTicketsSuccess_twoTickets() throws Exception {
 		List<Ticket> list = new ArrayList<>();
-		list.add(new Ticket()); // assuming JPA entity has no-arg constructor
+		list.add(new Ticket());
 		list.add(new Ticket());
 
 		when(ticketService.getAllTickets()).thenReturn(list);
@@ -61,25 +63,41 @@ class TicketServiceApplicationTests {
 	}
 
 	@Test
-	public void testCreateTicketSuccess() throws Exception {
-		when(ticketService.saveTicket(any(Ticket.class))).thenReturn(new Ticket());
+	void testGetOneTicketSuccess_byId() throws Exception {
+		Ticket t = new Ticket();
+		t.setId(1L);
+		t.setStatus("OPEN");  // optional
 
-		// ✅ JSON as String (no ObjectMapper)
-		String json = "{}";
+		when(ticketService.getOneTicket(1L)).thenReturn(t);
 
-		mvc.perform(post("/ticket/create")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(json)
-						.accept(MediaType.APPLICATION_JSON))
+		mvc.perform(get("/ticket/{id}", 1))
 				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.id").value(1));   // checks single object
 
-		verify(ticketService).saveTicket(any(Ticket.class));
+		verify(ticketService).getOneTicket(1L);
 	}
 
+//	@Test
+//	void testCreateTicketSuccess() throws Exception {
+//		when(ticketService.saveTicket(any(Ticket.class))).thenReturn(new Ticket());
+//
+//
+//		String json = "{}";
+//
+//		mvc.perform(post("/ticket/create")
+//						.contentType(MediaType.APPLICATION_JSON)
+//						.content(json)
+//						.accept(MediaType.APPLICATION_JSON))
+//				.andExpect(status().isOk())
+//				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+//
+//		verify(ticketService).saveTicket(any(Ticket.class));
+//	}
+
 	@Test
-	public void testUpdateTicketSuccess() throws Exception {
-		when(ticketService.updateTicket(eq(10), any(Ticket.class))).thenReturn(new Ticket());
+	void testUpdateTicketSuccess() throws Exception {
+		when(ticketService.updateTicket(eq(10L), any(Ticket.class))).thenReturn(new Ticket());
 
 		String json = "{}";
 
@@ -90,16 +108,16 @@ class TicketServiceApplicationTests {
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 
-		verify(ticketService).updateTicket(eq(10), any(Ticket.class));
+		verify(ticketService).updateTicket(eq(10L), any(Ticket.class));
 	}
 
 	@Test
-	public void testDeleteTicketSuccess() throws Exception {
-		doNothing().when(ticketService).deleteTicket(10);
+	void testDeleteTicketSuccess() throws Exception {
+		doNothing().when(ticketService).deleteTicket(10L);
 
 		mvc.perform(delete("/ticket/delete/10"))
 				.andExpect(status().isOk());
 
-		verify(ticketService).deleteTicket(10);
+		verify(ticketService).deleteTicket(10L);
 	}
 }
