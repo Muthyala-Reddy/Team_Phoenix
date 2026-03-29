@@ -2,9 +2,8 @@ package com.demo.spring.services;
 
 
 
-import com.demo.spring.Exceptions.TicketFoundException;
-import com.demo.spring.Exceptions.TicketNotFoundException;
-import com.demo.spring.Exceptions.TicketResourceException;
+import com.demo.spring.exceptions.TicketFoundException;
+import com.demo.spring.exceptions.TicketNotFoundException;
 import com.demo.spring.entity.Ticket;
 import com.demo.spring.repositories.TicketRepository;
 import org.springframework.stereotype.Service;
@@ -44,8 +43,8 @@ public class TicketService {
     public Ticket updateTicket(Integer id, Ticket t) {
         Ticket target = ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("No Ticket found associated with id!!"));
-        if (t.getUpdated_at() != null) {
-            target.setUpdated_at(t.getUpdated_at());
+        if (t.getUpdatedAt() != null) {
+            target.setUpdatedAt(t.getUpdatedAt());
         }
         if (t.getStatus() != null) {
             target.setStatus(t.getStatus());
@@ -53,7 +52,7 @@ public class TicketService {
         if (t.getPriority() != null) {
             target.setPriority(t.getPriority());
         }
-        if (t.getUpdated_at() == null && t.getStatus() == null && t.getPriority() == null) {
+        if (t.getUpdatedAt() == null && t.getStatus() == null && t.getPriority() == null) {
             throw new IllegalArgumentException("No fields provided to update!");
         }
         return ticketRepository.save(target);

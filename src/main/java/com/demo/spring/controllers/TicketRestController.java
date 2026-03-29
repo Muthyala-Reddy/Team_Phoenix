@@ -41,23 +41,13 @@ public class TicketRestController {
         return ResponseEntity.ok(newUpdatedTicket);
     }
 
-    @DeleteMapping(path = "/delete/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "/delete/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseMessage> deleteTicket(@PathVariable Integer id){
         ticketService.deleteTicket(id);
         return ResponseEntity.ok(new ResponseMessage("ticket deleted"));
     }
 
-//    Authentication purpose we created these two functions
 
-//    @GetMapping(path = "/User",produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<List<Ticket>> getLoginUser(){
-//        return ResponseEntity.ok(ticketService.getUser());
-//    }
-//
-//    @GetMapping(path = "/Admin",produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<List<Ticket>> getLoginAdmin(){
-//        return ResponseEntity.ok(ticketService.getAdmin());
-//    }
 
 
 

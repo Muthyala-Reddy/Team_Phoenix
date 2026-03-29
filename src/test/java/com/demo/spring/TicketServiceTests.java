@@ -17,7 +17,7 @@ import java.util.Optional;
 import  static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class TicketServiceTests {
+class TicketServiceTests {
     @MockitoBean
     TicketRepository ticketRepository;
 
