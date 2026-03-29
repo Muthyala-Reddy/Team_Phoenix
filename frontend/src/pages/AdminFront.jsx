@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const API_BASE = "http://localhost:8082";
@@ -40,14 +40,23 @@ function AdminFront() {
     localStorage.getItem("selectedService") || "ALL"
   );
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
-  // ✅ Admin guard
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // ✅ Guard stays inside AdminFront (simple)
   useEffect(() => {
-    if (localStorage.getItem("role") !== "ADMIN") {
-      navigate("/admin/login");
+    // If AdminFront ever renders on a wrong route, push to admin login
+    if (location.pathname !== "/admin") {
+      navigate("/admin/login", { replace: true });
+      return;
     }
-  }, [navigate]);
+
+    // Normal guard: only ADMIN can stay on /admin
+    if (localStorage.getItem("role") !== "ADMIN") {
+      navigate("/admin/login", { replace: true });
+    }
+  }, [navigate, location.pathname]);
 
   const loadTickets = async (cat) => {
     try {
@@ -251,9 +260,7 @@ function AdminFront() {
                 </td>
 
                 <td>
-                  <span
-                    className={`badge bg-${priorityBadge(t.priority || "MEDIUM")} me-2`}
-                  >
+                  <span className={`badge bg-${priorityBadge(t.priority || "MEDIUM")} me-2`}>
                     {t.priority || "MEDIUM"}
                   </span>
 

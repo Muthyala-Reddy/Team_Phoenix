@@ -27,6 +27,19 @@ function Home() {
     navigate("/");
   };
 
+  // ✅ NEW: Always clear auth before login
+  const goUserLogin = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    navigate("/login");
+  };
+
+  const goAdminLogin = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    navigate("/admin/login");
+  };
+
   const handleServiceClick = (service) => {
     localStorage.setItem("selectedService", service);
 
@@ -40,12 +53,12 @@ function Home() {
   };
 
   return (
-    <div className="d-flex flex-column min-vh-100">
+    
+<div className="d-flex flex-column min-vh-100">
       <nav className="navbar navbar-light bg-white shadow-sm px-4">
         <span
           className="navbar-brand fw-bold text-primary"
           role="button"
-          style={{ cursor: "pointer" }}
           onClick={() => navigate("/")}
         >
           TicketSupport
@@ -55,13 +68,13 @@ function Home() {
           <div>
             <button
               className="btn btn-outline-primary me-2"
-              onClick={() => navigate("/login")}
+              onClick={goUserLogin}
             >
               User Login
             </button>
             <button
               className="btn btn-primary"
-              onClick={() => navigate("/admin/login")}
+              onClick={goAdminLogin}
             >
               Admin Login
             </button>
@@ -80,12 +93,15 @@ function Home() {
           </div>
         )}
       </nav>
+
+
       <div className="hero-section text-center text-white py-5">
         <h2 className="fw-bold">Welcome to TicketSupport</h2>
         <p className="lead">
           A simple way to raise and manage support tickets
         </p>
       </div>
+
       <div className="container mt-5 flex-grow-1">
         <h5 className="text-center mb-4 fw-semibold">
           Which service desk do you need help with?
@@ -135,6 +151,7 @@ function Home() {
           </div>
         </div>
       </div>
+
       <footer className="bg-dark text-light mt-5">
         <div className="container py-4">
           <div className="row">
