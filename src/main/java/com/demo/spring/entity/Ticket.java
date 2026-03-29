@@ -1,10 +1,7 @@
 package com.demo.spring.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -13,30 +10,26 @@ import java.time.LocalDateTime;
 public class Ticket {
 
     @Id
-    @Column(name = "ID")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
 
     private String title;
-
     private String description;
-
     private String status;
-
     private String priority;
 
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
-
-    @Column(name = "created_by")
+    @Column(name = "created_by",nullable = false)
     private String createdBy;
 
+    public Ticket() {}
 
-    public Ticket() {
-    }
 
-    public Ticket(Integer id, String title, String description, String status, String priority, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Ticket(Long id, String title, String description, String status, String priority, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -46,11 +39,11 @@ public class Ticket {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -90,16 +83,16 @@ public class Ticket {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime newCreatedAt) {
-        this.createdAt = newCreatedAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime newUpdatedAt) {
-        this.updatedAt = newUpdatedAt;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getCreatedBy() {

@@ -26,15 +26,15 @@ class TicketServiceTests {
 
     @Test
     void testTicketServiceForOneTicket() {
-        when(ticketRepository.findById(1)).thenReturn(Optional.of(
+        when(ticketRepository.findById(1L)).thenReturn(Optional.of(
                 new Ticket(
-                        1, "A", "B", "C", "D",
+                        1L, "A", "B", "C", "D",
                         LocalDateTime.parse("2026-03-27T12:34:21"),
                         LocalDateTime.parse("2026-03-27T12:34:21")
                 )
         ));
 
-        Ticket ticket = ticketService.getOneTicket(1);
+        Ticket ticket = ticketService.getOneTicket(1L);
         Assertions.assertEquals("C", ticket.getStatus());
     }
 
@@ -50,18 +50,18 @@ class TicketServiceTests {
     @Test
     void testSaveTicket_success() {
         Ticket ticket = new Ticket();
-        ticket.setId(10);
-        when(ticketRepository.existsById(10)).thenReturn(false);
+
         when(ticketRepository.save(ticket)).thenReturn(ticket);
-        Ticket saved = ticketService.saveTicket(ticket);
+
+        Ticket saved = ticketService.saveTicket("user1", ticket);
+
         Assertions.assertNotNull(saved);
-        verify(ticketRepository).existsById(10);
         verify(ticketRepository).save(ticket);
     }
 
     @Test
     void testUpdateTicket_success() {
-        Integer id = 1;
+        Long id = 1L;
 
         Ticket existing = new Ticket();
         existing.setId(id);
@@ -82,7 +82,7 @@ class TicketServiceTests {
 
     @Test
     void testDeleteTicket_success() {
-        Integer id = 1;
+        Long id = 1L;
 
         when(ticketRepository.existsById(id)).thenReturn(true);
         doNothing().when(ticketRepository).deleteById(id);
