@@ -24,14 +24,29 @@ public class TicketService {
     }
 
 
-    public Ticket saveTicket(String username,Ticket t) {
+    public Ticket saveTicket(String username, Ticket t) {
         t.setCreatedBy(username);
+
+        if (t.getStatus() == null) {
+            t.setStatus("OPEN");
+        }
+
+        if (t.getPriority() == null) {
+            t.setPriority("MEDIUM");
+        }
+
+        if (t.getCategory() == null || t.getCategory().isBlank()) {
+            t.setCategory("IT"); // default
+        }
+
         if (t.getCreated_at() == null) {
             t.setCreated_at(LocalDateTime.now());
         }
         t.setUpdated_at(LocalDateTime.now());
+
         return ticketRepository.save(t);
     }
+
 
 
     public Ticket getOneTicket(Long id){
@@ -48,20 +63,27 @@ public class TicketService {
                 .orElseThrow(() ->
                         new TicketNotFoundException("No Ticket found with id")
                 );
+
+        boolean updated = false;
+
         if (t.getStatus() != null) {
             target.setStatus(t.getStatus());
+            updated = true;
         }
+
         if (t.getPriority() != null) {
             target.setPriority(t.getPriority());
+            updated = true;
         }
-        if(t.getUpdated_at() == null && t.getStatus() == null && t.getPriority() == null){
+
+        if (!updated) {
             throw new IllegalArgumentException("No fields to update");
         }
 
         target.setUpdated_at(LocalDateTime.now());
-
         return ticketRepository.save(target);
     }
+
 
     public void deleteTicket(Long id) {
         if (!ticketRepository.existsById(id)) {
@@ -72,5 +94,9 @@ public class TicketService {
 
     public List<Ticket> getUserTickets(String username) {
         return ticketRepository.findByCreatedBy(username);
+    }
+
+    public List<Ticket> getTicketsByCategory(String category) {
+        return ticketRepository.findByCategory(category);
     }
 }

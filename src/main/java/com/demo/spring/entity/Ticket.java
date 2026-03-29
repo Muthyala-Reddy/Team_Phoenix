@@ -19,7 +19,7 @@ public class Ticket {
     private String description;
     private String status;
     private String priority;
-
+    private String category;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
@@ -29,12 +29,13 @@ public class Ticket {
     public Ticket() {}
 
 
-    public Ticket(Long id, String title, String description, String status, String priority, LocalDateTime created_at, LocalDateTime updated_at) {
+    public Ticket(Long id, String title, String description, String status, String priority, String category, LocalDateTime created_at, LocalDateTime updated_at) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
         this.priority = priority;
+        this.category = category;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -77,6 +78,14 @@ public class Ticket {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public LocalDateTime getCreated_at() {
