@@ -1,0 +1,22 @@
+/* Full page center */
+.user-page {
+  min-height: 100vh;
+  background-color: #f8f9fa; /* light bootstrap gray */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Login card */
+.user-card {
+  width: 100%;
+  max-width: 380px;   /* ✅ good login width */
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+/* Optional spacing polish */
+.user-card h3 {
+  font-weight: 600;
+}
