@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/Users.css";
 
-
 function User() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -21,18 +20,13 @@ function User() {
         password,
       });
 
-
       if (res.status === 200) {
         localStorage.setItem("username", res.data.username);
         localStorage.setItem("role", res.data.role);
 
-        if (res.data.role === "ADMIN") {
-          navigate("/admin");
-        } else {
-          navigate("/user");
-        }
+        if (res.data.role === "ADMIN") navigate("/admin");
+        else navigate("/user");
       }
-
     } catch (err) {
       if (err.response && err.response.status === 401) {
         setError("Invalid username or password");
@@ -55,7 +49,6 @@ function User() {
             <input
               type="text"
               className="form-control form-control-sm"
-              placeholder="Enter username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -67,7 +60,6 @@ function User() {
             <input
               type="password"
               className="form-control form-control-sm"
-              placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

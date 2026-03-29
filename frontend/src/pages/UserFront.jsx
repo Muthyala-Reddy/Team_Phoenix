@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+const API_BASE = "http://localhost:8082";
 
 function UserFront() {
   const [tickets, setTickets] = useState([]);
@@ -15,20 +16,32 @@ function UserFront() {
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
 
+  // ✅ keep category synced with Home selection
+  const [category, setCategory] = useState(
+    localStorage.getItem("selectedService") || "IT"
+  );
 
-  const storedService = localStorage.getItem("selectedService");
-  const [category, setCategory] = useState(storedService || "IT");
-
-
+  // ✅ Guard
   useEffect(() => {
     if (!username) navigate("/login");
   }, [username, navigate]);
 
+  // ✅ Sync category when user clicks a service on Home (same tab)
+  useEffect(() => {
+    const syncService = () => {
+      const s = localStorage.getItem("selectedService");
+      if (s) setCategory(s);
+    };
+    window.addEventListener("focus", syncService);
+    return () => window.removeEventListener("focus", syncService);
+  }, []);
+
+  // ✅ Fetch user tickets
   useEffect(() => {
     if (!username) return;
 
     axios
-      .get(`http://localhost:8082/ticket/User`, { params: { username } })
+      .get(`${API_BASE}/ticket/User`, { params: { username } })
       .then((res) => setTickets(res.data))
       .catch(() => setError("Failed to fetch tickets"));
   }, [username]);
@@ -43,14 +56,12 @@ function UserFront() {
         description,
         status,
         priority,
-        category,
+        category, // ✅ important
       };
 
-      const res = await axios.post(
-        `http://localhost:8082/ticket/create`,
-        payload,
-        { params: { username } }
-      );
+      const res = await axios.post(`${API_BASE}/ticket/create`, payload, {
+        params: { username },
+      });
 
       setTickets((prev) => [...prev, res.data]);
       setTitle("");
@@ -62,9 +73,16 @@ function UserFront() {
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    // keep selectedService if you want the user to keep context
+    navigate("/");
+  };
+
   return (
     <div className="container mt-4">
-
+      {/* ✅ Top Navbar */}
       <nav className="navbar navbar-light bg-white shadow-sm px-4 mb-4">
         <span
           className="navbar-brand fw-bold text-primary"
@@ -74,23 +92,26 @@ function UserFront() {
         >
           TicketSupport
         </span>
-        <span className="text-muted small">User Dashboard</span>
+        <div className="d-flex align-items-center gap-3">
+          <span className="text-muted small">User Dashboard</span>
+          <button className="btn btn-outline-danger btn-sm" onClick={logout}>
+            Logout
+          </button>
+        </div>
       </nav>
 
       {error && <div className="alert alert-danger">{error}</div>}
 
-
+      {/* ✅ Create Ticket Card */}
       <div className="card shadow-sm mb-4">
         <div className="card-body">
           <h5 className="fw-bold mb-3">
             Create Ticket{" "}
-            <span className="badge bg-light text-dark border">
-              {category}
-            </span>
+            <span className="badge bg-light text-dark border">{category}</span>
           </h5>
 
           <form onSubmit={handleCreateTicket}>
-
+            {/* Category */}
             <div className="mb-3">
               <label className="form-label">Category</label>
               <select
@@ -99,7 +120,7 @@ function UserFront() {
                 onChange={(e) => setCategory(e.target.value)}
               >
                 <option value="IT">IT</option>
-                <option value="FACILITIES">Facilities</option>
+                <option value="FACILITIES">FACILITIES</option>
                 <option value="HR">HR</option>
               </select>
               <small className="text-muted">
@@ -107,7 +128,7 @@ function UserFront() {
               </small>
             </div>
 
-
+            {/* Title */}
             <div className="mb-3">
               <label className="form-label">Title</label>
               <input
@@ -119,6 +140,7 @@ function UserFront() {
               />
             </div>
 
+            {/* Description */}
             <div className="mb-3">
               <label className="form-label">Description</label>
               <textarea
@@ -131,13 +153,12 @@ function UserFront() {
               />
             </div>
 
-            <button className="btn btn-primary">
-              Submit Ticket
-            </button>
+            <button className="btn btn-primary">Submit Ticket</button>
           </form>
         </div>
       </div>
 
+      {/* ✅ Tickets Table */}
       <h5 className="fw-bold mb-3">My Tickets ({username})</h5>
 
       <div className="table-responsive">

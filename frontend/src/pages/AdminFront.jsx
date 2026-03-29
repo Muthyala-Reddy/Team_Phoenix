@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+const API_BASE = "http://localhost:8082";
 
 const statusBadge = (status) => {
   switch (status) {
@@ -41,6 +42,7 @@ function AdminFront() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // ✅ Admin guard
   useEffect(() => {
     if (localStorage.getItem("role") !== "ADMIN") {
       navigate("/admin/login");
@@ -53,10 +55,12 @@ function AdminFront() {
       setError("");
 
       if (!cat || cat === "ALL") {
-        const res = await axios.get(`http://localhost:8082/ticket/admin/all`);
+        const res = await axios.get(`${API_BASE}/ticket/admin/all`);
         setTickets(res.data);
       } else {
-        const res = await axios.get(`http://localhost:8082/ticket/admin/category/${cat}`);
+        const res = await axios.get(
+          `${API_BASE}/ticket/admin/category/${cat}`
+        );
         setTickets(res.data);
       }
     } catch (e) {
@@ -67,19 +71,15 @@ function AdminFront() {
     }
   };
 
-
   useEffect(() => {
     loadTickets(category);
-   
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCategoryChange = (newCat) => {
     setCategory(newCat);
-    if (newCat === "ALL") {
-      localStorage.removeItem("selectedService");
-    } else {
-      localStorage.setItem("selectedService", newCat);
-    }
+    if (newCat === "ALL") localStorage.removeItem("selectedService");
+    else localStorage.setItem("selectedService", newCat);
     loadTickets(newCat);
   };
 
@@ -91,14 +91,14 @@ function AdminFront() {
 
   const updateStatus = (id, status) => {
     axios
-      .put(`http://localhost:8082/ticket/update/${id}`, { status })
+      .put(`${API_BASE}/ticket/update/${id}`, { status })
       .then(() => loadTickets(category))
       .catch(() => alert("Failed to update status"));
   };
 
   const updatePriority = (id, priority) => {
     axios
-      .put(`http://localhost:8082/ticket/update/${id}`, { priority })
+      .put(`${API_BASE}/ticket/update/${id}`, { priority })
       .then(() => loadTickets(category))
       .catch(() => alert("Failed to update priority"));
   };
@@ -107,9 +107,16 @@ function AdminFront() {
     if (!window.confirm("Are you sure you want to delete this ticket?")) return;
 
     axios
-      .delete(`http://localhost:8082/ticket/delete/${id}`)
+      .delete(`${API_BASE}/ticket/delete/${id}`)
       .then(() => loadTickets(category))
       .catch(() => alert("Failed to delete ticket"));
+  };
+
+  const logout = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    localStorage.removeItem("selectedService");
+    navigate("/");
   };
 
   const summary = useMemo(() => {
@@ -121,21 +128,27 @@ function AdminFront() {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex align-items-center justify-content-between mb-3">
-        <div>
-          <nav className="navbar navbar-light bg-white shadow-sm px-4 mb-4">
-            <span
-              className="navbar-brand fw-bold text-primary"
-              role="button"
-              style={{ cursor: "pointer" }}
-              onClick={() => navigate("/")}
-            >
-              TicketSupport System
-            </span>
-          </nav>
-          <h3 className="fw-bold mb-0">Admin Dashboard</h3>
-
+      {/* ✅ Top Navbar */}
+      <nav className="navbar navbar-light bg-white shadow-sm px-4 mb-4">
+        <span
+          className="navbar-brand fw-bold text-primary"
+          role="button"
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate("/")}
+        >
+          TicketSupport
+        </span>
+        <div className="d-flex align-items-center gap-3">
+          <span className="text-muted small">Admin Panel</span>
+          <button className="btn btn-outline-danger btn-sm" onClick={logout}>
+            Logout
+          </button>
         </div>
+      </nav>
+
+      {/* Header + Filter */}
+      <div className="d-flex align-items-center justify-content-between mb-3">
+        <h3 className="fw-bold mb-0">Admin Dashboard</h3>
 
         <div className="d-flex gap-2 align-items-center">
           <select
@@ -150,65 +163,41 @@ function AdminFront() {
             <option value="HR">HR</option>
           </select>
 
-          <button
-            className="btn btn-outline-secondary btn-sm"
-            onClick={clearFilter}
-          >
+          <button className="btn btn-outline-secondary btn-sm" onClick={clearFilter}>
             Clear
           </button>
         </div>
       </div>
 
-      <div className="d-flex align-items-center justify-content-between">
-        {category !== "ALL" ? (
-          <div className="alert alert-info py-2 mb-3 w-100">
-            Active Filter: <b>{category}</b>
-          </div>
-        ) : (
-          <div className="mb-3" />
-        )}
-      </div>
+      {category !== "ALL" && (
+        <div className="alert alert-info py-2 mb-3">
+          Active Filter: <b>{category}</b>
+        </div>
+      )}
+
+      {/* Summary */}
       <div className="row g-3 mb-3">
-        <div className="col-md-3">
-          <div className="card shadow-sm">
-            <div className="card-body py-3">
-              <div className="text-muted small">Total</div>
-              <div className="fs-4 fw-bold">{summary.total}</div>
+        {[
+          ["Total", summary.total],
+          ["OPEN", summary.open],
+          ["IN_PROGRESS", summary.inProgress],
+          ["RESOLVED", summary.resolved],
+        ].map(([label, value]) => (
+          <div className="col-md-3" key={label}>
+            <div className="card shadow-sm">
+              <div className="card-body py-3">
+                <div className="text-muted small">{label}</div>
+                <div className="fs-4 fw-bold">{value}</div>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className="col-md-3">
-          <div className="card shadow-sm">
-            <div className="card-body py-3">
-              <div className="text-muted small">OPEN</div>
-              <div className="fs-4 fw-bold">{summary.open}</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-3">
-          <div className="card shadow-sm">
-            <div className="card-body py-3">
-              <div className="text-muted small">IN_PROGRESS</div>
-              <div className="fs-4 fw-bold">{summary.inProgress}</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-3">
-          <div className="card shadow-sm">
-            <div className="card-body py-3">
-              <div className="text-muted small">RESOLVED</div>
-              <div className="fs-4 fw-bold">{summary.resolved}</div>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
       {error && <div className="alert alert-danger">{error}</div>}
       {loading && <div className="alert alert-secondary">Loading tickets…</div>}
 
+      {/* Table */}
       <div className="table-responsive">
         <table className="table table-hover align-middle shadow-sm">
           <thead className="table-dark">
@@ -261,12 +250,9 @@ function AdminFront() {
                   </select>
                 </td>
 
-
                 <td>
                   <span
-                    className={`badge bg-${priorityBadge(
-                      t.priority || "MEDIUM"
-                    )} me-2`}
+                    className={`badge bg-${priorityBadge(t.priority || "MEDIUM")} me-2`}
                   >
                     {t.priority || "MEDIUM"}
                   </span>
