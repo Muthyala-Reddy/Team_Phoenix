@@ -1,69 +1,65 @@
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styles/Users.css";
 
 function Admin() {
-  
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      setError("");
-              
-      try {
-        const res = await axios.post("http://localhost:8082/api/auth/login", {
-          username,
-          password,
-        });
-        
-        // if success -> go to next page
-        if (res.status === 200) {
-          navigate("/userfront");
-        }
-      } catch (err) {
-        // if backend returns 401
-        if (err.response && err.response.status === 401) {
-          setError("Invalid username or password");
-        } else {
-          setError("Server error. Please try again.");
-        }
+    e.preventDefault();
+    setError("");
+
+    try {
+      const res = await axios.post("http://localhost:8082/api/auth/login", {
+        username,
+        password,
+      });
+
+      if (res.status === 200 && res.data.role === "ADMIN") {
+        localStorage.setItem("username", res.data.username);
+        localStorage.setItem("role", res.data.role);
+        navigate("/admin");
+      } else {
+        setError("You are not authorized as Admin");
       }
-    };
+    } catch {
+      setError("Invalid username or password");
+    }
+  };
 
   return (
-    <div className="container mt-4">
-      <div className="mb-3">
-        <label htmlFor="formGroupExampleInput" className="form-label">
-          Username
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="formGroupExampleInput"
-          placeholder="Enter here"
-        />
-      </div>
+    <div className="user-page">
+      <div className="user-card shadow">
+        <h3 className="text-center mb-4">Admin Login</h3>
 
-      <div className="mb-3">
-        <label htmlFor="formGroupExampleInput2" className="form-label">
-          Password
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="formGroupExampleInput2"
-          placeholder="Password"
-        />
-      </div>
-      <div>
-        <button onClick={handleSubmit}>Submit</button>
-      </div>
+        {error && <p className="text-danger text-center">{error}</p>}
 
+        <form onSubmit={handleSubmit}>
+          <input
+            className="form-control mb-3"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+
+          <input
+            type="password"
+            className="form-control mb-3"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button className="btn btn-success w-100">Login</button>
+        </form>
+      </div>
     </div>
-    
   );
 }
 

@@ -1,0 +1,36 @@
+.hero-section {
+  background: linear-gradient(135deg, #6a5acd, #7b68ee);
+  padding: 60px 20px;
+}
+
+
+.service-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.service-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.hero-section {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+}
+
+.service-card {
+  border-radius: 10px;
+  padding: 30px;
+  background: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+footer a:hover {
+  text-decoration: underline;
+}

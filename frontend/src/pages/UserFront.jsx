@@ -1,97 +1,182 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 function UserFront() {
+  const [tickets, setTickets] = useState([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("MEDIUM");
+  const [status, setStatus] = useState("OPEN");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+  const username = localStorage.getItem("username");
+
+
+  const storedService = localStorage.getItem("selectedService");
+  const [category, setCategory] = useState(storedService || "IT");
+
+
+  useEffect(() => {
+    if (!username) navigate("/login");
+  }, [username, navigate]);
+
+  useEffect(() => {
+    if (!username) return;
+
+    axios
+      .get(`http://localhost:8082/ticket/User`, { params: { username } })
+      .then((res) => setTickets(res.data))
+      .catch(() => setError("Failed to fetch tickets"));
+  }, [username]);
+
+  const handleCreateTicket = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const payload = {
+        title,
+        description,
+        status,
+        priority,
+        category,
+      };
+
+      const res = await axios.post(
+        `http://localhost:8082/ticket/create`,
+        payload,
+        { params: { username } }
+      );
+
+      setTickets((prev) => [...prev, res.data]);
+      setTitle("");
+      setDescription("");
+      setPriority("MEDIUM");
+      setStatus("OPEN");
+    } catch {
+      setError("Failed to create ticket.");
+    }
+  };
+
   return (
     <div className="container mt-4">
-      <form>
-        {/* Title_of_Incident */}
-        <div className="row mb-3">
-          <label htmlFor="inputTitle_of_Incident3" className="col-sm-2 col-form-label">
-            Title_of_Incident
-          </label>
-          <div className="col-sm-10">
-            <input
-              type="Title_of_Incident"
-              className="form-control"
-              id="inputTitle_of_Incident3"
-              placeholder="Enter Title_of_Incident"
-            />
-          </div>
+
+      <nav className="navbar navbar-light bg-white shadow-sm px-4 mb-4">
+        <span
+          className="navbar-brand fw-bold text-primary"
+          role="button"
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate("/")}
+        >
+          TicketSupport
+        </span>
+        <span className="text-muted small">User Dashboard</span>
+      </nav>
+
+      {error && <div className="alert alert-danger">{error}</div>}
+
+
+      <div className="card shadow-sm mb-4">
+        <div className="card-body">
+          <h5 className="fw-bold mb-3">
+            Create Ticket{" "}
+            <span className="badge bg-light text-dark border">
+              {category}
+            </span>
+          </h5>
+
+          <form onSubmit={handleCreateTicket}>
+
+            <div className="mb-3">
+              <label className="form-label">Category</label>
+              <select
+                className="form-select"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="IT">IT</option>
+                <option value="FACILITIES">Facilities</option>
+                <option value="HR">HR</option>
+              </select>
+              <small className="text-muted">
+                Auto-selected from Home page service card
+              </small>
+            </div>
+
+
+            <div className="mb-3">
+              <label className="form-label">Title</label>
+              <input
+                className="form-control"
+                placeholder="Enter issue title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Description</label>
+              <textarea
+                className="form-control"
+                rows="3"
+                placeholder="Describe your issue"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+              />
+            </div>
+
+            <button className="btn btn-primary">
+              Submit Ticket
+            </button>
+          </form>
         </div>
+      </div>
 
-        {/* Description */}
-        <div className="row mb-3">
-          <label htmlFor="inputDescription3" className="col-sm-2 col-form-label">
-            Description
-          </label>
-          <div className="col-sm-10">
-            <input
-              type="Description"
-              className="form-control"
-              id="inputDescription3"
-              placeholder="Enter Description"
-            />
-          </div>
-        </div>
+      <h5 className="fw-bold mb-3">My Tickets ({username})</h5>
 
-        {/* type */}
-        <fieldset className="row mb-3">
-          <legend className="col-form-label col-sm-1 pt-3">Type</legend>
+      <div className="table-responsive">
+        <table className="table table-hover align-middle shadow-sm">
+          <thead className="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
 
-          <div className="col-sm-2">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="gridRadios"
-                id="gridRadios1"
-                value="option1"
-                defaultChecked
-              />
-              <label className="form-check-label" htmlFor="gridRadios1">
-                Bugs
-              </label>
-            </div>
+          <tbody>
+            {tickets.map((t) => (
+              <tr key={t.id}>
+                <td className="fw-semibold">{t.id}</td>
+                <td>{t.title}</td>
+                <td>
+                  <span className="badge bg-light text-dark border">
+                    {t.category}
+                  </span>
+                </td>
+                <td>{t.status}</td>
+                <td>{t.priority}</td>
+              </tr>
+            ))}
 
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="gridRadios"
-                id="gridRadios2"
-                value="option2"
-              />
-              <label className="form-check-label" htmlFor="gridRadios2">
-                Software_installation
-              </label>
-            </div>
-
-            <div className="form-check disabled">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="gridRadios"
-                id="gridRadios3"
-                value="option3"
-                
-              />
-              <label className="form-check-label" htmlFor="gridRadios3">
-                Equipment_Related
-              </label>
-
-            </div>
-          </div>
-        </fieldset>
-
-        {/* Checkbox */}
-        
-        
-
-        {/* Submit Button */}
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
+            {tickets.length === 0 && (
+              <tr>
+                <td colSpan={5} className="text-center text-muted py-4">
+                  No tickets created yet.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
