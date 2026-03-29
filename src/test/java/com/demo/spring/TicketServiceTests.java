@@ -2,10 +2,12 @@ package com.demo.spring;
 
 
 import com.demo.spring.entity.Ticket;
+import com.demo.spring.exceptions.TicketNotFoundException;
 import com.demo.spring.repositories.TicketRepository;
 import com.demo.spring.services.TicketService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -92,6 +94,86 @@ class TicketServiceTests {
         verify(ticketRepository).existsById(id);
         verify(ticketRepository).deleteById(id);
     }
+
+
+    @Test
+    void testGetUserTickets() {
+        String username = "user1";
+
+        Ticket t1 = new Ticket();
+        t1.setCreatedBy(username);
+
+        Ticket t2 = new Ticket();
+        t2.setCreatedBy(username);
+
+        when(ticketRepository.findByCreatedBy(username))
+                .thenReturn(List.of(t1, t2));
+
+        List<Ticket> result = ticketService.getUserTickets(username);
+
+        Assertions.assertEquals(2, result.size());
+        Assertions.assertEquals(username, result.get(0).getCreatedBy());
+        verify(ticketRepository).findByCreatedBy(username);
+    }
+
+    @Test
+    void testGetTicketsByCategory() {
+        String category = "IT";
+
+        Ticket t1 = new Ticket();
+        t1.setCategory(category);
+
+        when(ticketRepository.findByCategory(category))
+                .thenReturn(List.of(t1));
+
+        List<Ticket> result = ticketService.getTicketsByCategory(category);
+
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(category, result.get(0).getCategory());
+        verify(ticketRepository).findByCategory(category);
+    }
+
+    @Test
+    void testUpdateTicket_ticketNotFound_exception() {
+        when(ticketRepository.findById(99L)).thenReturn(Optional.empty());
+
+        Executable executable =
+                () -> ticketService.updateTicket(99L, new Ticket());
+
+        Assertions.assertThrows(TicketNotFoundException.class, executable);
+
+        verify(ticketRepository).findById(99L);
+    }
+
+    @Test
+    void testUpdateTicket_noFieldsToUpdate_exception() {
+        Ticket existing = new Ticket();
+        existing.setId(1L);
+
+        when(ticketRepository.findById(1L)).thenReturn(Optional.of(existing));
+
+        Executable executable =
+                () -> ticketService.updateTicket(1L, new Ticket());
+
+        Assertions.assertThrows(IllegalArgumentException.class, executable);
+
+        verify(ticketRepository).findById(1L);
+        verify(ticketRepository, never()).save(any());
+    }
+
+    @Test
+    void testDeleteTicket_ticketNotFound_exception() {
+        when(ticketRepository.existsById(5L)).thenReturn(false);
+
+        Executable executable =
+                () -> ticketService.deleteTicket(5L);
+
+        Assertions.assertThrows(TicketNotFoundException.class, executable);
+
+        verify(ticketRepository).existsById(5L);
+        verify(ticketRepository, never()).deleteById(any());
+    }
+
 
 
 

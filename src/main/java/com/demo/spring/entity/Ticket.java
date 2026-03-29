@@ -14,12 +14,11 @@ public class Ticket {
     @Column(name = "id")
     private Long id;
 
-
     private String title;
     private String description;
     private String status;
     private String priority;
-
+    private String category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -77,6 +76,14 @@ public class Ticket {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public LocalDateTime getCreatedAt() {

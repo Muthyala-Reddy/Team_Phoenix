@@ -18,7 +18,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody Users req) {
+    public ResponseEntity<Object> login(@RequestBody Users req) {
 
         Users user = userRepository.findByUsername(req.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid username"));

@@ -72,4 +72,8 @@ public class TicketService {
     public List<Ticket> getUserTickets(String username) {
         return ticketRepository.findByCreatedBy(username);
     }
+
+    public List<Ticket> getTicketsByCategory(String category) {
+        return ticketRepository.findByCategory(category);
+    }
 }

@@ -59,4 +59,14 @@ public class TicketRestController {
     ) {
         return ResponseEntity.ok(ticketService.getUserTickets(username));
     }
+
+    @GetMapping(
+            path = "/admin/category/{category}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<List<Ticket>> getTicketsByCategory(
+            @PathVariable String category
+    ) {
+        return ResponseEntity.ok(ticketService.getTicketsByCategory(category));
+    }
 }
