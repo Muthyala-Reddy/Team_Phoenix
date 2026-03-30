@@ -27,7 +27,6 @@ function Home() {
     navigate("/");
   };
 
-  // ✅ NEW: Always clear auth before login
   const goUserLogin = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("role");

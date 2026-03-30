@@ -11,15 +11,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-
-        {/* Login pages */}
         <Route path="/login" element={<User />} />
         <Route path="/admin/login" element={<Admin />} />
-
-        {/* Dashboards */}
         <Route path="/user" element={<UserFront />} />
         <Route path="/admin" element={<AdminFront />} />
-
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

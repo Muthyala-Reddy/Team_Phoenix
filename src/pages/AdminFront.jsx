@@ -44,7 +44,6 @@ function AdminFront() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Guard stays inside AdminFront (simple)
   useEffect(() => {
     // If AdminFront ever renders on a wrong route, push to admin login
     if (location.pathname !== "/admin") {
@@ -52,7 +51,6 @@ function AdminFront() {
       return;
     }
 
-    // Normal guard: only ADMIN can stay on /admin
     if (localStorage.getItem("role") !== "ADMIN") {
       navigate("/admin/login", { replace: true });
     }
@@ -82,7 +80,6 @@ function AdminFront() {
 
   useEffect(() => {
     loadTickets(category);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCategoryChange = (newCat) => {
@@ -137,7 +134,6 @@ function AdminFront() {
 
   return (
     <div className="container mt-4">
-      {/* ✅ Top Navbar */}
       <nav className="navbar navbar-light bg-white shadow-sm px-4 mb-4">
         <span
           className="navbar-brand fw-bold text-primary"
@@ -155,7 +151,6 @@ function AdminFront() {
         </div>
       </nav>
 
-      {/* Header + Filter */}
       <div className="d-flex align-items-center justify-content-between mb-3">
         <h3 className="fw-bold mb-0">Admin Dashboard</h3>
 
@@ -184,7 +179,6 @@ function AdminFront() {
         </div>
       )}
 
-      {/* Summary */}
       <div className="row g-3 mb-3">
         {[
           ["Total", summary.total],
@@ -206,7 +200,6 @@ function AdminFront() {
       {error && <div className="alert alert-danger">{error}</div>}
       {loading && <div className="alert alert-secondary">Loading tickets…</div>}
 
-      {/* Table */}
       <div className="table-responsive">
         <table className="table table-hover align-middle shadow-sm">
           <thead className="table-dark">

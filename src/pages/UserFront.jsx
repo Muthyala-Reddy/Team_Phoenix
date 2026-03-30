@@ -16,17 +16,16 @@ function UserFront() {
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
 
-  // ✅ keep category synced with Home selection
   const [category, setCategory] = useState(
     localStorage.getItem("selectedService") || "IT"
   );
 
-  // ✅ Guard
+
   useEffect(() => {
     if (!username) navigate("/login");
   }, [username, navigate]);
 
-  // ✅ Sync category when user clicks a service on Home (same tab)
+
   useEffect(() => {
     const syncService = () => {
       const s = localStorage.getItem("selectedService");
@@ -36,7 +35,6 @@ function UserFront() {
     return () => window.removeEventListener("focus", syncService);
   }, []);
 
-  // ✅ Fetch user tickets
   useEffect(() => {
     if (!username) return;
 
@@ -56,7 +54,7 @@ function UserFront() {
         description,
         status,
         priority,
-        category, // ✅ important
+        category,
       };
 
       const res = await axios.post(`${API_BASE}/ticket/create`, payload, {
@@ -76,13 +74,12 @@ function UserFront() {
   const logout = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("role");
-    // keep selectedService if you want the user to keep context
     navigate("/");
   };
 
   return (
     <div className="container mt-4">
-      {/* ✅ Top Navbar */}
+
       <nav className="navbar navbar-light bg-white shadow-sm px-4 mb-4">
         <span
           className="navbar-brand fw-bold text-primary"
@@ -102,7 +99,6 @@ function UserFront() {
 
       {error && <div className="alert alert-danger">{error}</div>}
 
-      {/* ✅ Create Ticket Card */}
       <div className="card shadow-sm mb-4">
         <div className="card-body">
           <h5 className="fw-bold mb-3">
@@ -111,7 +107,6 @@ function UserFront() {
           </h5>
 
           <form onSubmit={handleCreateTicket}>
-            {/* Category */}
             <div className="mb-3">
               <label className="form-label">Category</label>
               <select
@@ -128,7 +123,6 @@ function UserFront() {
               </small>
             </div>
 
-            {/* Title */}
             <div className="mb-3">
               <label className="form-label">Title</label>
               <input
@@ -140,7 +134,6 @@ function UserFront() {
               />
             </div>
 
-            {/* Description */}
             <div className="mb-3">
               <label className="form-label">Description</label>
               <textarea
@@ -157,8 +150,6 @@ function UserFront() {
           </form>
         </div>
       </div>
-
-      {/* ✅ Tickets Table */}
       <h5 className="fw-bold mb-3">My Tickets ({username})</h5>
 
       <div className="table-responsive">
